@@ -71,6 +71,46 @@
             font-weight: 500;
         }
 
+        /* Tab Navigation */
+        .tab-nav {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .tab-btn {
+            padding: 10px 20px;
+            background: transparent;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            color: white;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .tab-btn.active {
+            color: white;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         /* Service Selector */
         .service-grid {
             display: grid;
@@ -116,6 +156,7 @@
             display: flex;
             gap: 12px;
             margin-top: 10px;
+            flex-wrap: wrap;
         }
 
         .input-field {
@@ -127,6 +168,7 @@
             color: white;
             font-size: 15px;
             transition: border-color 0.3s;
+            min-width: 200px;
         }
 
         .input-field::placeholder {
@@ -136,6 +178,21 @@
         .input-field:focus {
             outline: none;
             border-color: #667eea;
+        }
+
+        .input-field[type="file"] {
+            padding: 12px;
+            color: #aaa;
+        }
+
+        .input-field[type="file"]::file-selector-button {
+            padding: 8px 16px;
+            background: rgba(102, 126, 234, 0.3);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+            margin-right: 10px;
         }
 
         .btn-primary {
@@ -160,44 +217,6 @@
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
-        }
-
-        /* Result */
-        #resultArea {
-            margin-top: 20px;
-            display: none;
-        }
-
-        .result-card {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
-            padding: 20px;
-            border-left: 4px solid #28a745;
-        }
-
-        .result-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-            color: white;
-        }
-
-        .result-content {
-            word-break: break-all;
-            color: #ddd;
-            font-size: 14px;
-            margin-bottom: 15px;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 8px;
-            font-family: monospace;
-        }
-
-        .result-actions {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
         }
 
         .btn-secondary {
@@ -235,8 +254,95 @@
             background: #5a6268;
         }
 
+        .btn-download {
+            background: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-download:hover {
+            background: #0069d9;
+        }
+
+        /* Result */
+        #resultArea, #resultAreaRemoveBG {
+            margin-top: 20px;
+            display: none;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            border-left: 4px solid #28a745;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            color: white;
+        }
+
+        .result-content {
+            word-break: break-all;
+            color: #ddd;
+            font-size: 14px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            font-family: monospace;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Image Preview */
+        .image-preview {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 15px 0;
+        }
+
+        .image-preview-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 12px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .image-preview-box h4 {
+            color: #aaa;
+            font-size: 13px;
+            margin-bottom: 10px;
+        }
+
+        .image-preview-box img {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            background: repeating-conic-gradient(#444 0% 25%, #555 0% 50%) 0 0 / 20px 20px;
+        }
+
+        .image-preview-box .placeholder {
+            color: #666;
+            padding: 40px 0;
+            font-size: 14px;
+        }
+
+        @media (max-width: 600px) {
+            .image-preview {
+                grid-template-columns: 1fr;
+            }
+        }
+
         /* Loading */
-        #loading {
+        #loading, #loadingRemoveBG {
             display: none;
             text-align: center;
             padding: 30px 0;
@@ -257,7 +363,7 @@
             100% { transform: rotate(360deg); }
         }
 
-        #loading p {
+        #loading p, #loadingRemoveBG p {
             color: #aaa;
         }
 
@@ -356,39 +462,6 @@
             font-size: 14px;
         }
 
-        /* Tools Grid */
-        .tools-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-
-        .tool-btn {
-            padding: 15px 12px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 12px;
-            color: #aaa;
-            cursor: pointer;
-            transition: all 0.3s;
-            text-align: center;
-            font-size: 13px;
-        }
-
-        .tool-btn:hover {
-            background: rgba(102, 126, 234, 0.15);
-            border-color: #667eea;
-            color: white;
-            transform: translateY(-2px);
-        }
-
-        .tool-btn .tool-icon {
-            font-size: 24px;
-            display: block;
-            margin-bottom: 6px;
-        }
-
         /* Scrollbar */
         ::-webkit-scrollbar {
             width: 6px;
@@ -427,8 +500,13 @@
                 font-size: 28px;
             }
 
-            .tools-grid {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            .tab-nav {
+                gap: 4px;
+            }
+
+            .tab-btn {
+                padding: 8px 14px;
+                font-size: 12px;
             }
         }
 
@@ -453,111 +531,156 @@
         <!-- Header -->
         <div class="header">
             <h1>⚡ FGSI Tools</h1>
-            <p>All-in-One API Tools — Skip Link, Shortener, & More</p>
+            <p>All-in-One API Tools — Skip Link, Remove BG, & More</p>
         </div>
 
-        <!-- Main Card -->
-        <div class="card">
-            <div class="card-title">
-                🔗 Pilih Metode Skip
-                <span class="badge">8 Metode</span>
-            </div>
-
-            <!-- Service Selector -->
-            <div class="service-grid" id="serviceGrid">
-                <button class="service-btn active" data-service="tutwuri">
-                    <span class="icon">🌐</span>
-                    Tutwuri/SFL
-                </button>
-                <button class="service-btn" data-service="adlinksumo">
-                    <span class="icon">📢</span>
-                    AdLinkSumo
-                </button>
-                <button class="service-btn" data-service="droplink">
-                    <span class="icon">🔽</span>
-                    Droplink
-                </button>
-                <button class="service-btn" data-service="linkvertise">
-                    <span class="icon">🔗</span>
-                    Linkvertise
-                </button>
-                <button class="service-btn" data-service="ouo">
-                    <span class="icon">📎</span>
-                    Ouo.io
-                </button>
-                <button class="service-btn" data-service="shortig">
-                    <span class="icon">⚡</span>
-                    Shortig
-                </button>
-                <button class="service-btn" data-service="shortxlinks">
-                    <span class="icon">🔀</span>
-                    ShortXLinks
-                </button>
-                <button class="service-btn" data-service="sub4unlock">
-                    <span class="icon">🔓</span>
-                    Sub4Unlock
-                </button>
-            </div>
-
-            <!-- Input -->
-            <div class="input-group">
-                <input type="url" id="urlInput" placeholder="Masukkan URL target (contoh: https://example.com)" class="input-field">
-                <button id="bypassBtn" class="btn-primary">⚡ Bypass</button>
-            </div>
-
-            <!-- Loading -->
-            <div id="loading">
-                <div class="spinner"></div>
-                <p>Memproses bypass...</p>
-            </div>
-
-            <!-- Result -->
-            <div id="resultArea">
-                <div class="result-card">
-                    <div class="result-header">
-                        <span id="resultTitle">✅ Hasil Bypass</span>
-                        <span id="resultService" style="font-size:12px;color:#667eea;"></span>
-                    </div>
-                    <div id="resultContent" class="result-content"></div>
-                    <div class="result-actions">
-                        <button id="copyBtn" class="btn-secondary">📋 Copy</button>
-                        <a id="resultLink" href="#" target="_blank" class="btn-secondary btn-success">🌍 Buka Link</a>
-                        <button id="showOriginalBtn" class="btn-secondary btn-original" style="display:none;">📄 Lihat Original</button>
-                    </div>
-                    <div id="originalUrlDisplay" style="display:none;margin-top:10px;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;color:#888;font-size:12px;word-break:break-all;">
-                        <strong>URL Original:</strong> <span id="originalUrlText"></span>
-                    </div>
-                </div>
+        <!-- Tab Navigation -->
+        <div class="card" style="padding-bottom: 15px;">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="bypass">🔗 Skip Link</button>
+                <button class="tab-btn" data-tab="removebg">🖼️ Remove BG</button>
             </div>
         </div>
 
-        <!-- Tools Card -->
-        <div class="card">
-            <div class="card-title">
-                🛠️ Tools Lainnya
-                <span class="badge">Coming Soon</span>
-            </div>
-            <div class="tools-grid">
-                <div class="tool-btn" onclick="alert('Fitur Shortener akan segera hadir!')">
-                    <span class="tool-icon">📏</span>
-                    Shortener
+        <!-- ============================================================ -->
+        <!-- TAB 1: BYPASS LINK -->
+        <!-- ============================================================ -->
+        <div class="tab-content active" id="tab-bypass">
+            <div class="card">
+                <div class="card-title">
+                    🔗 Pilih Metode Skip
+                    <span class="badge">8 Metode</span>
                 </div>
-                <div class="tool-btn" onclick="alert('Fitur Translate akan segera hadir!')">
-                    <span class="tool-icon">🌍</span>
-                    Translate
+
+                <div class="service-grid" id="serviceGrid">
+                    <button class="service-btn active" data-service="tutwuri">
+                        <span class="icon">🌐</span>
+                        Tutwuri/SFL
+                    </button>
+                    <button class="service-btn" data-service="adlinksumo">
+                        <span class="icon">📢</span>
+                        AdLinkSumo
+                    </button>
+                    <button class="service-btn" data-service="droplink">
+                        <span class="icon">🔽</span>
+                        Droplink
+                    </button>
+                    <button class="service-btn" data-service="linkvertise">
+                        <span class="icon">🔗</span>
+                        Linkvertise
+                    </button>
+                    <button class="service-btn" data-service="ouo">
+                        <span class="icon">📎</span>
+                        Ouo.io
+                    </button>
+                    <button class="service-btn" data-service="shortig">
+                        <span class="icon">⚡</span>
+                        Shortig
+                    </button>
+                    <button class="service-btn" data-service="shortxlinks">
+                        <span class="icon">🔀</span>
+                        ShortXLinks
+                    </button>
+                    <button class="service-btn" data-service="sub4unlock">
+                        <span class="icon">🔓</span>
+                        Sub4Unlock
+                    </button>
                 </div>
-                <div class="tool-btn" onclick="alert('Fitur SaveWeb akan segera hadir!')">
-                    <span class="tool-icon">💾</span>
-                    SaveWeb
+
+                <div class="input-group">
+                    <input type="url" id="urlInput" placeholder="Masukkan URL target (contoh: https://example.com)" class="input-field">
+                    <button id="bypassBtn" class="btn-primary">⚡ Bypass</button>
                 </div>
-                <div class="tool-btn" onclick="alert('Fitur RemoveBG akan segera hadir!')">
-                    <span class="tool-icon">🖼️</span>
-                    RemoveBG
+
+                <div id="loading">
+                    <div class="spinner"></div>
+                    <p>Memproses bypass...</p>
+                </div>
+
+                <div id="resultArea">
+                    <div class="result-card">
+                        <div class="result-header">
+                            <span id="resultTitle">✅ Hasil Bypass</span>
+                            <span id="resultService" style="font-size:12px;color:#667eea;"></span>
+                        </div>
+                        <div id="resultContent" class="result-content"></div>
+                        <div class="result-actions">
+                            <button id="copyBtn" class="btn-secondary">📋 Copy</button>
+                            <a id="resultLink" href="#" target="_blank" class="btn-secondary btn-success">🌍 Buka Link</a>
+                            <button id="showOriginalBtn" class="btn-secondary btn-original" style="display:none;">📄 Lihat Original</button>
+                        </div>
+                        <div id="originalUrlDisplay" style="display:none;margin-top:10px;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;color:#888;font-size:12px;word-break:break-all;">
+                            <strong>URL Original:</strong> <span id="originalUrlText"></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- History Card -->
+        <!-- ============================================================ -->
+        <!-- TAB 2: REMOVE BG -->
+        <!-- ============================================================ -->
+        <div class="tab-content" id="tab-removebg">
+            <div class="card">
+                <div class="card-title">
+                    🖼️ Remove Background
+                    <span class="badge">AI-Powered</span>
+                </div>
+
+                <p style="color:#aaa;font-size:14px;margin-bottom:15px;">
+                    Upload gambar atau masukkan URL gambar untuk menghapus background secara otomatis.
+                </p>
+
+                <div class="input-group">
+                    <input type="file" id="imageFileInput" accept="image/*" class="input-field">
+                    <span style="color:#666;padding:0 10px;">atau</span>
+                    <input type="url" id="imageUrlInput" placeholder="Masukkan URL gambar (contoh: https://example.com/image.jpg)" class="input-field">
+                </div>
+
+                <div class="input-group" style="margin-top:10px;">
+                    <button id="removeBgBtn" class="btn-primary">✨ Remove Background</button>
+                </div>
+
+                <!-- Image Preview -->
+                <div class="image-preview" id="imagePreview">
+                    <div class="image-preview-box">
+                        <h4>📷 Original</h4>
+                        <div id="originalPreview">
+                            <div class="placeholder">Belum ada gambar</div>
+                        </div>
+                    </div>
+                    <div class="image-preview-box">
+                        <h4>✨ Hasil (No Background)</h4>
+                        <div id="resultPreview">
+                            <div class="placeholder">Belum ada hasil</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="loadingRemoveBG">
+                    <div class="spinner"></div>
+                    <p>Memproses remove background...</p>
+                </div>
+
+                <div id="resultAreaRemoveBG">
+                    <div class="result-card" style="border-left-color: #007bff;">
+                        <div class="result-header">
+                            <span>✅ Background Berhasil Dihapus!</span>
+                        </div>
+                        <div class="result-actions">
+                            <button id="downloadBgBtn" class="btn-secondary btn-download">⬇️ Download Hasil</button>
+                            <button id="copyBgBtn" class="btn-secondary">📋 Copy URL</button>
+                            <a id="resultBgLink" href="#" target="_blank" class="btn-secondary btn-success">🌍 Buka Gambar</a>
+                        </div>
+                        <div id="resultBgContent" class="result-content" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- HISTORY -->
+        <!-- ============================================================ -->
         <div class="card">
             <div class="history-section">
                 <div class="history-header">
@@ -576,7 +699,7 @@
 
     <script>
         // ============================================================
-        // KONFIGURASI API (Berdasarkan Dokumentasi Resmi)
+        // KONFIGURASI API
         // ============================================================
         const API_CONFIG = {
             tutwuri: {
@@ -618,6 +741,11 @@
                 name: 'Sub4Unlock',
                 endpoint: 'https://fgsi.dpdns.org/api/tools/skip/sub4unlock',
                 apikey: 'fgsiapi-19ddf32a-6d'
+            },
+            removebg: {
+                name: 'Remove BG',
+                endpoint: 'https://fgsi.dpdns.org/api/tools/removebg',
+                apikey: 'fgsiapi-19ddf32a-6d'
             }
         };
 
@@ -627,9 +755,10 @@
         let currentService = 'tutwuri';
         let history = JSON.parse(localStorage.getItem('fgsi_history') || '[]');
         let lastOriginalUrl = '';
+        let currentBgResult = '';
 
         // ============================================================
-        // DOM ELEMENTS
+        // DOM ELEMENTS - BYPASS
         // ============================================================
         const urlInput = document.getElementById('urlInput');
         const bypassBtn = document.getElementById('bypassBtn');
@@ -647,6 +776,34 @@
         const originalUrlText = document.getElementById('originalUrlText');
 
         // ============================================================
+        // DOM ELEMENTS - REMOVE BG
+        // ============================================================
+        const imageFileInput = document.getElementById('imageFileInput');
+        const imageUrlInput = document.getElementById('imageUrlInput');
+        const removeBgBtn = document.getElementById('removeBgBtn');
+        const loadingRemoveBG = document.getElementById('loadingRemoveBG');
+        const resultAreaRemoveBG = document.getElementById('resultAreaRemoveBG');
+        const resultBgContent = document.getElementById('resultBgContent');
+        const resultBgLink = document.getElementById('resultBgLink');
+        const downloadBgBtn = document.getElementById('downloadBgBtn');
+        const copyBgBtn = document.getElementById('copyBgBtn');
+        const originalPreview = document.getElementById('originalPreview');
+        const resultPreview = document.getElementById('resultPreview');
+
+        // ============================================================
+        // TAB NAVIGATION
+        // ============================================================
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+                document.getElementById('tab-' + this.dataset.tab).classList.add('active');
+            });
+        });
+
+        // ============================================================
         // SERVICE SELECTOR
         // ============================================================
         document.querySelectorAll('.service-btn').forEach(btn => {
@@ -655,13 +812,12 @@
                 this.classList.add('active');
                 currentService = this.dataset.service;
                 urlInput.placeholder = `Masukkan URL untuk ${API_CONFIG[currentService].name}...`;
-                // Sembunyikan result saat ganti service
                 resultArea.style.display = 'none';
             });
         });
 
         // ============================================================
-        // CORE FUNCTION: BYPASS
+        // BYPASS FUNCTION
         // ============================================================
         async function bypassUrl() {
             const url = urlInput.value.trim();
@@ -670,7 +826,6 @@
                 return;
             }
 
-            // Validasi URL
             try {
                 new URL(url);
             } catch {
@@ -678,7 +833,6 @@
                 return;
             }
 
-            // Show loading
             loading.style.display = 'block';
             resultArea.style.display = 'none';
             bypassBtn.disabled = true;
@@ -689,8 +843,6 @@
 
                 const apiUrl = `${config.endpoint}?apikey=${config.apikey}&url=${encodeURIComponent(url)}`;
                 
-                console.log('📡 Request ke:', apiUrl);
-                
                 const response = await fetch(apiUrl);
                 
                 if (!response.ok) {
@@ -698,20 +850,17 @@
                 }
 
                 const data = await response.json();
-                console.log('📦 Response:', data);
 
-                // Cek status response
                 if (data.status === false) {
                     throw new Error(data.message || 'Gagal bypass link!');
                 }
 
-                // Tampilkan hasil
                 displayResult(data, url, config.name);
                 saveHistory(url, data, config.name);
 
             } catch (error) {
                 console.error('❌ Error:', error);
-                alert(`❌ Terjadi kesalahan!\n${error.message}\n\nPastikan:\n- API key masih aktif\n- URL target valid\n- Koneksi internet stabil`);
+                alert(`❌ Terjadi kesalahan!\n${error.message}`);
             } finally {
                 loading.style.display = 'none';
                 bypassBtn.disabled = false;
@@ -719,7 +868,7 @@
         }
 
         // ============================================================
-        // DISPLAY RESULT (FIXED - Cuma tampilin link hasil bypass)
+        // DISPLAY RESULT
         // ============================================================
         function displayResult(data, originalUrl, serviceName) {
             resultArea.style.display = 'block';
@@ -728,9 +877,7 @@
             let resultText = '';
             let originalLink = originalUrl;
 
-            // Parse response berdasarkan struktur dari screenshot
             if (data && data.status === true && data.data) {
-                // Format: { status: true, data: { url: "...", original: "..." } }
                 if (data.data.url) {
                     shortUrl = data.data.url;
                     resultText = data.data.url;
@@ -739,7 +886,6 @@
                     originalLink = data.data.original;
                 }
             } else if (typeof data === 'string') {
-                // Response berupa string langsung
                 resultText = data;
                 shortUrl = data;
             } else if (data.short_url || data.shortUrl) {
@@ -749,28 +895,21 @@
                 resultText = data.result;
                 shortUrl = data.result;
             } else if (data.url) {
-                // Fallback: langsung ambil url
                 shortUrl = data.url;
                 resultText = data.url;
             } else {
-                // Kalau ga jelas, tampilkan JSON
                 resultText = JSON.stringify(data, null, 2);
                 shortUrl = '#';
             }
 
-            // Tampilkan hanya link hasil bypass (clean)
             resultContent.textContent = resultText;
             resultLink.href = shortUrl;
             resultLink.target = '_blank';
             
-            // Simpan original URL untuk tombol lihat original
             lastOriginalUrl = originalLink;
-            
-            // Update title & service
             resultTitle.textContent = '✅ Hasil Bypass';
             resultService.textContent = `via ${serviceName}`;
             
-            // Tampilkan/sembunyikan tombol original
             if (originalLink && originalLink !== shortUrl && originalLink !== '#') {
                 showOriginalBtn.style.display = 'inline-block';
                 originalUrlText.textContent = originalLink;
@@ -779,7 +918,6 @@
                 originalUrlDisplay.style.display = 'none';
             }
             
-            // Sembunyikan result link kalau ga valid
             if (shortUrl === '#' || !shortUrl.startsWith('http')) {
                 resultLink.style.display = 'none';
             } else {
@@ -801,12 +939,11 @@
         });
 
         // ============================================================
-        // SAVE HISTORY (FIXED - ambil URL dari response)
+        // SAVE HISTORY
         // ============================================================
         function saveHistory(originalUrl, data, serviceName) {
             let shortUrl = '#';
             
-            // Parse URL hasil dari response
             if (data && data.status === true && data.data && data.data.url) {
                 shortUrl = data.data.url;
             } else if (typeof data === 'string') {
@@ -819,7 +956,6 @@
                 shortUrl = data.url;
             }
 
-            // Simpan ke history
             history.unshift({
                 original: originalUrl,
                 short: shortUrl,
@@ -834,7 +970,7 @@
         }
 
         // ============================================================
-        // HISTORY
+        // RENDER HISTORY
         // ============================================================
         function renderHistory() {
             historyList.innerHTML = '';
@@ -885,7 +1021,6 @@
                 copyBtn.textContent = '✅ Copied!';
                 setTimeout(() => copyBtn.textContent = '📋 Copy', 2000);
             }).catch(() => {
-                // Fallback untuk browser yang tidak support clipboard
                 const textarea = document.createElement('textarea');
                 textarea.value = text;
                 document.body.appendChild(textarea);
@@ -898,15 +1033,231 @@
         });
 
         // ============================================================
+        // REMOVE BACKGROUND
+        // ============================================================
+        async function removeBackground() {
+            let imageUrl = imageUrlInput.value.trim();
+            
+            // Cek apakah ada file yang diupload
+            if (imageFileInput.files && imageFileInput.files.length > 0) {
+                const file = imageFileInput.files[0];
+                // Upload file ke API (gunakan FormData)
+                const formData = new FormData();
+                formData.append('image', file);
+                formData.append('apikey', API_CONFIG.removebg.apikey);
+                
+                loadingRemoveBG.style.display = 'block';
+                resultAreaRemoveBG.style.display = 'none';
+                removeBgBtn.disabled = true;
+                
+                try {
+                    const response = await fetch(API_CONFIG.removebg.endpoint, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                    }
+                    
+                    const data = await response.json();
+                    console.log('📦 RemoveBG Response:', data);
+                    
+                    displayRemoveBgResult(data);
+                    
+                } catch (error) {
+                    console.error('❌ Error:', error);
+                    alert(`❌ Gagal remove background!\n${error.message}`);
+                } finally {
+                    loadingRemoveBG.style.display = 'none';
+                    removeBgBtn.disabled = false;
+                }
+                return;
+            }
+            
+            // Pakai URL
+            if (!imageUrl) {
+                alert('⚠️ Silakan upload gambar atau masukkan URL gambar!');
+                return;
+            }
+            
+            try {
+                new URL(imageUrl);
+            } catch {
+                alert('⚠️ URL gambar tidak valid!');
+                return;
+            }
+            
+            loadingRemoveBG.style.display = 'block';
+            resultAreaRemoveBG.style.display = 'none';
+            removeBgBtn.disabled = true;
+            
+            try {
+                const config = API_CONFIG.removebg;
+                const apiUrl = `${config.endpoint}?apikey=${config.apikey}&url=${encodeURIComponent(imageUrl)}`;
+                
+                const response = await fetch(apiUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                const data = await response.json();
+                console.log('📦 RemoveBG Response:', data);
+                
+                displayRemoveBgResult(data);
+                
+            } catch (error) {
+                console.error('❌ Error:', error);
+                alert(`❌ Gagal remove background!\n${error.message}`);
+            } finally {
+                loadingRemoveBG.style.display = 'none';
+                removeBgBtn.disabled = false;
+            }
+        }
+
+        // ============================================================
+        // DISPLAY REMOVE BG RESULT
+        // ============================================================
+        function displayRemoveBgResult(data) {
+            let resultUrl = '#';
+            let resultText = '';
+            
+            // Parse response
+            if (data && data.status === true && data.data) {
+                if (data.data.url) {
+                    resultUrl = data.data.url;
+                    resultText = data.data.url;
+                } else if (data.data.image) {
+                    resultUrl = data.data.image;
+                    resultText = data.data.image;
+                } else if (data.data.result) {
+                    resultUrl = data.data.result;
+                    resultText = data.data.result;
+                }
+            } else if (data && data.url) {
+                resultUrl = data.url;
+                resultText = data.url;
+            } else if (typeof data === 'string') {
+                resultUrl = data;
+                resultText = data;
+            } else {
+                resultText = JSON.stringify(data, null, 2);
+            }
+            
+            currentBgResult = resultUrl;
+            
+            // Tampilkan preview
+            if (resultUrl && resultUrl.startsWith('http')) {
+                // Preview original (jika ada URL input)
+                const inputUrl = imageUrlInput.value.trim();
+                if (inputUrl) {
+                    originalPreview.innerHTML = `<img src="${inputUrl}" alt="Original" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>Gagal load gambar</div>'">`;
+                } else if (imageFileInput.files && imageFileInput.files.length > 0) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        originalPreview.innerHTML = `<img src="${e.target.result}" alt="Original">`;
+                    };
+                    reader.readAsDataURL(imageFileInput.files[0]);
+                }
+                
+                // Preview hasil
+                resultPreview.innerHTML = `<img src="${resultUrl}" alt="Hasil Remove BG" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>Gagal load gambar</div>'">`;
+                
+                // Tampilkan result card
+                resultAreaRemoveBG.style.display = 'block';
+                resultBgContent.textContent = resultText;
+                resultBgLink.href = resultUrl;
+                resultBgLink.target = '_blank';
+                
+            } else {
+                alert('Gagal mendapatkan hasil remove background!');
+            }
+        }
+
+        // ============================================================
+        // DOWNLOAD REMOVE BG RESULT
+        // ============================================================
+        downloadBgBtn.addEventListener('click', function() {
+            if (!currentBgResult || currentBgResult === '#') {
+                alert('Tidak ada gambar untuk di-download!');
+                return;
+            }
+            
+            // Download image via fetch
+            fetch(currentBgResult)
+                .then(response => response.blob())
+                .then(blob => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'hasil_removebg.png';
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                })
+                .catch(() => {
+                    // Fallback: buka di tab baru
+                    window.open(currentBgResult, '_blank');
+                });
+        });
+
+        // ============================================================
+        // COPY REMOVE BG RESULT
+        // ============================================================
+        copyBgBtn.addEventListener('click', function() {
+            const text = resultBgContent.textContent;
+            if (!text || text === '#') {
+                alert('Tidak ada URL untuk disalin!');
+                return;
+            }
+            
+            navigator.clipboard.writeText(text).then(() => {
+                copyBgBtn.textContent = '✅ Copied!';
+                setTimeout(() => copyBgBtn.textContent = '📋 Copy URL', 2000);
+            }).catch(() => {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                document.body.appendChild(textarea);
+                textarea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textarea);
+                copyBgBtn.textContent = '✅ Copied!';
+                setTimeout(() => copyBgBtn.textContent = '📋 Copy URL', 2000);
+            });
+        });
+
+        // ============================================================
+        // PREVIEW IMAGE ON FILE SELECT
+        // ============================================================
+        imageFileInput.addEventListener('change', function() {
+            if (this.files && this.files.length > 0) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    originalPreview.innerHTML = `<img src="${e.target.result}" alt="Original">`;
+                };
+                reader.readAsDataURL(this.files[0]);
+                imageUrlInput.value = '';
+            }
+        });
+
+        imageUrlInput.addEventListener('input', function() {
+            if (this.value.trim()) {
+                imageFileInput.value = '';
+                originalPreview.innerHTML = `<img src="${this.value}" alt="Original" onerror="this.parentElement.innerHTML='<div class=\\'placeholder\\'>Gagal load gambar</div>'">`;
+            }
+        });
+
+        // ============================================================
         // EVENT LISTENERS
         // ============================================================
-        // Enter key
         urlInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') bypassUrl();
         });
 
-        // Bypass button
         bypassBtn.addEventListener('click', bypassUrl);
+        removeBgBtn.addEventListener('click', removeBackground);
 
         // ============================================================
         // INIT
@@ -915,7 +1266,7 @@
         urlInput.placeholder = `Masukkan URL untuk ${API_CONFIG.tutwuri.name}...`;
 
         console.log('🚀 FGSI Tools Loaded!');
-        console.log(`📊 ${Object.keys(API_CONFIG).length} metode skip tersedia`);
+        console.log(`📊 ${Object.keys(API_CONFIG).length} fitur tersedia`);
         console.log(`📜 ${history.length} riwayat tersimpan`);
     </script>
 </body>
