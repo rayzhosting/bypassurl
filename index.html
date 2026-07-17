@@ -229,12 +229,18 @@
             background: rgba(0, 0, 0, 0.3);
             border-radius: 8px;
             font-family: monospace;
+            max-height: 300px;
+            overflow-y: auto;
         }
 
         .result-actions {
             display: flex;
             gap: 10px;
             flex-wrap: wrap;
+        }
+
+        .result-warning {
+            border-left-color: #ffc107;
         }
 
         .result-error {
@@ -374,6 +380,49 @@
             display: none;
         }
 
+        .debug-info {
+            color: #666;
+            font-size: 11px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 6px;
+            word-break: break-all;
+            display: none;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .social-actions {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: none;
+        }
+
+        .social-actions h4 {
+            color: #aaa;
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        .social-actions a {
+            color: #667eea;
+            text-decoration: none;
+            font-size: 13px;
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(102, 126, 234, 0.15);
+            border-radius: 6px;
+            margin: 2px 4px 2px 0;
+        }
+
+        .social-actions a:hover {
+            background: rgba(102, 126, 234, 0.3);
+        }
+
         ::-webkit-scrollbar {
             width: 6px;
         }
@@ -497,6 +546,10 @@
                         <span id="resultService" style="font-size:12px;color:#667eea;"></span>
                     </div>
                     <div id="resultContent" class="result-content"></div>
+                    <div id="socialActions" class="social-actions">
+                        <h4>📢 Social Actions</h4>
+                        <div id="socialActionsList"></div>
+                    </div>
                     <div class="result-actions">
                         <button id="copyBtn" class="btn-secondary">📋 Copy</button>
                         <a id="resultLink" href="#" target="_blank" class="btn-secondary btn-success">🌍 Buka Link</a>
@@ -505,6 +558,7 @@
                     <div id="originalUrlDisplay" style="display:none;margin-top:10px;padding:10px;background:rgba(0,0,0,0.3);border-radius:8px;color:#888;font-size:12px;word-break:break-all;">
                         <strong>URL Original:</strong> <span id="originalUrlText"></span>
                     </div>
+                    <div id="debugInfo" class="debug-info"></div>
                 </div>
             </div>
         </div>
@@ -533,7 +587,7 @@
                 name: 'Tutwuri/SFL',
                 endpoint: 'https://fgsi.dpdns.org/api/tools/skip/tutwuri',
                 apikey: 'fgsiapi-19ddf32a-6d',
-                domains: ['sfl.gl', 'tutwuri.com', 'tutwuri.id']
+                domains: ['sfl.gl', 'tutwuri.com', 'tutwuri.id', 'sf1.gl']
             },
             adlinksumo: {
                 name: 'AdLinkSumo',
@@ -585,6 +639,7 @@
         let currentService = 'tutwuri';
         let history = JSON.parse(localStorage.getItem('fgsi_history') || '[]');
         let lastOriginalUrl = '';
+        let lastRawResponse = '';
 
         // ============================================================
         // DOM ELEMENTS
@@ -605,6 +660,9 @@
         const originalUrlText = document.getElementById('originalUrlText');
         const autoDetect = document.getElementById('autoDetect');
         const detectedService = document.getElementById('detectedService');
+        const debugInfo = document.getElementById('debugInfo');
+        const socialActions = document.getElementById('socialActions');
+        const socialActionsList = document.getElementById('socialActionsList');
 
         // ============================================================
         // SERVICE SELECTOR
@@ -645,14 +703,11 @@
             const url = this.value.trim();
             if (url) {
                 const detected = detectService(url);
-                if (detected && detected !== currentService) {
+                if (detected) {
                     autoDetect.style.display = 'block';
-                    detectedService.textContent = API_CONFIG[detected].name;
-                    detectedService.style.color = '#28a745';
-                } else if (detected === currentService) {
-                    autoDetect.style.display = 'block';
-                    detectedService.textContent = API_CONFIG[detected].name + ' ✅';
-                    detectedService.style.color = '#28a745';
+                    const isActive = detected === currentService;
+                    detectedService.textContent = API_CONFIG[detected].name + (isActive ? ' ✅' : '');
+                    detectedService.style.color = isActive ? '#28a745' : '#ffc107';
                 } else {
                     autoDetect.style.display = 'none';
                 }
@@ -678,12 +733,10 @@
                 return;
             }
 
-            // Auto detect dan switch service
             const detected = detectService(url);
             let serviceToUse = currentService;
             if (detected) {
                 serviceToUse = detected;
-                // Highlight tombol yang sesuai
                 document.querySelectorAll('.service-btn').forEach(b => {
                     b.classList.toggle('active', b.dataset.service === detected);
                 });
@@ -692,6 +745,8 @@
             loading.style.display = 'block';
             resultArea.style.display = 'none';
             bypassBtn.disabled = true;
+            debugInfo.style.display = 'none';
+            socialActions.style.display = 'none';
 
             try {
                 const config = API_CONFIG[serviceToUse];
@@ -714,6 +769,7 @@
 
                 const data = await response.json();
                 console.log('📦 Response:', data);
+                lastRawResponse = JSON.stringify(data, null, 2);
 
                 if (data.status === false) {
                     throw new Error(data.message || data.data?.message || 'Gagal bypass link!');
@@ -737,48 +793,109 @@
         function showError(message) {
             resultArea.style.display = 'block';
             const card = document.querySelector('.result-card');
+            card.classList.remove('result-warning');
             card.classList.add('result-error');
             
             resultTitle.textContent = '❌ Error';
+            resultTitle.style.color = '#dc3545';
             resultService.textContent = '';
             resultContent.textContent = message;
             resultLink.style.display = 'none';
             showOriginalBtn.style.display = 'none';
             originalUrlDisplay.style.display = 'none';
             copyBtn.textContent = '📋 Copy Error';
+            socialActions.style.display = 'none';
             
             setTimeout(() => {
                 card.classList.remove('result-error');
                 copyBtn.textContent = '📋 Copy';
+                resultTitle.style.color = '#28a745';
             }, 5000);
         }
 
         // ============================================================
-        // DISPLAY RESULT
+        // DISPLAY RESULT - FIXED (tambah linkGo & socialActions)
         // ============================================================
         function displayResult(data, originalUrl, serviceName) {
             resultArea.style.display = 'block';
-            document.querySelector('.result-card').classList.remove('result-error');
+            const card = document.querySelector('.result-card');
+            card.classList.remove('result-error', 'result-warning');
             
             let shortUrl = '#';
             let resultText = '';
             let originalLink = originalUrl;
 
-            // Parse response
-            if (data && data.status === true && data.data) {
-                if (data.data.url) {
-                    shortUrl = data.data.url;
-                    resultText = data.data.url;
-                }
-                if (data.data.original) {
-                    originalLink = data.data.original;
-                }
-                if (data.data.message && !resultText) {
-                    resultText = data.data.message;
+            console.log('📦 Full Response:', JSON.stringify(data, null, 2));
+
+            // Reset social actions
+            socialActions.style.display = 'none';
+            socialActionsList.innerHTML = '';
+
+            // CEK: apakah response punya data
+            if (data && data.status === true) {
+                if (data.data) {
+                    // DAFTAR KEY URL (tambah linkGo!)
+                    const urlKeys = ['url', 'link', 'result', 'short_url', 'shortUrl', 'bypass', 'destination', 'target', 'location', 'linkGo'];
+                    let found = false;
+                    for (const key of urlKeys) {
+                        if (data.data[key]) {
+                            shortUrl = data.data[key];
+                            resultText = data.data[key];
+                            found = true;
+                            break;
+                        }
+                    }
+                    // Jika masih kosong, cek apakah data.data itu string URL
+                    if (!found) {
+                        if (typeof data.data === 'string' && data.data.startsWith('http')) {
+                            shortUrl = data.data;
+                            resultText = data.data;
+                        } else {
+                            // Tampilkan JSON tapi highlight linkGo
+                            const jsonStr = JSON.stringify(data.data, null, 2);
+                            resultText = jsonStr;
+                            shortUrl = '#';
+                            
+                            // Coba cari linkGo di string JSON
+                            const linkGoMatch = jsonStr.match(/"linkGo":\s*"([^"]+)"/);
+                            if (linkGoMatch && linkGoMatch[1]) {
+                                shortUrl = linkGoMatch[1];
+                                resultText = linkGoMatch[1];
+                            }
+                            
+                            // Cek socialActions
+                            if (data.data.socialActions && Array.isArray(data.data.socialActions)) {
+                                showSocialActions(data.data.socialActions);
+                            }
+                        }
+                    } else {
+                        // Cek socialActions
+                        if (data.data.socialActions && Array.isArray(data.data.socialActions)) {
+                            showSocialActions(data.data.socialActions);
+                        }
+                    }
+                    if (data.data.original) {
+                        originalLink = data.data.original;
+                    }
+                } else if (data.linkGo) {
+                    shortUrl = data.linkGo;
+                    resultText = data.linkGo;
+                } else if (data.url) {
+                    shortUrl = data.url;
+                    resultText = data.url;
+                } else if (data.result) {
+                    shortUrl = data.result;
+                    resultText = data.result;
+                } else {
+                    resultText = JSON.stringify(data, null, 2);
+                    shortUrl = '#';
                 }
             } else if (typeof data === 'string') {
                 resultText = data;
                 shortUrl = data;
+            } else if (data.linkGo) {
+                shortUrl = data.linkGo;
+                resultText = data.linkGo;
             } else if (data.short_url || data.shortUrl) {
                 shortUrl = data.short_url || data.shortUrl;
                 resultText = shortUrl;
@@ -793,34 +910,64 @@
                 shortUrl = '#';
             }
 
-            // Validasi URL hasil
-            if (shortUrl && !shortUrl.startsWith('http') && shortUrl !== '#') {
+            // Validasi URL
+            if (shortUrl && !shortUrl.startsWith('http') && shortUrl !== '#' && shortUrl !== '' && shortUrl !== 'null') {
                 shortUrl = 'https://' + shortUrl;
             }
 
-            resultContent.textContent = resultText;
-            resultLink.href = shortUrl;
-            resultLink.target = '_blank';
+            // TAMPILKAN HASIL
+            const isValidUrl = shortUrl && shortUrl !== '#' && shortUrl !== '' && shortUrl !== 'null' && shortUrl.startsWith('http');
             
-            lastOriginalUrl = originalLink;
-            resultTitle.textContent = '✅ Hasil Bypass';
+            if (!isValidUrl) {
+                resultContent.textContent = '⚠️ Tidak ada URL hasil yang ditemukan.\n\nResponse:\n' + resultText;
+                resultLink.style.display = 'none';
+                resultTitle.textContent = '⚠️ Perlu Diperiksa';
+                resultTitle.style.color = '#ffc107';
+                card.classList.add('result-warning');
+                
+                debugInfo.textContent = 'Raw Response: ' + JSON.stringify(data, null, 2);
+                debugInfo.style.display = 'block';
+            } else {
+                resultContent.textContent = resultText;
+                resultLink.href = shortUrl;
+                resultLink.target = '_blank';
+                resultLink.style.display = 'inline-block';
+                resultTitle.textContent = '✅ Hasil Bypass';
+                resultTitle.style.color = '#28a745';
+                debugInfo.style.display = 'none';
+            }
+            
             resultService.textContent = `via ${serviceName}`;
             
-            if (originalLink && originalLink !== shortUrl && originalLink !== '#') {
+            if (originalLink && originalLink !== shortUrl && originalLink !== '#' && originalLink !== '') {
                 showOriginalBtn.style.display = 'inline-block';
                 originalUrlText.textContent = originalLink;
             } else {
                 showOriginalBtn.style.display = 'none';
                 originalUrlDisplay.style.display = 'none';
             }
-            
-            if (shortUrl === '#' || shortUrl === '') {
-                resultLink.style.display = 'none';
-            } else {
-                resultLink.style.display = 'inline-block';
-            }
+        }
 
-            copyBtn.textContent = '📋 Copy';
+        // ============================================================
+        // SHOW SOCIAL ACTIONS
+        // ============================================================
+        function showSocialActions(actions) {
+            if (!actions || actions.length === 0) return;
+            
+            socialActions.style.display = 'block';
+            socialActionsList.innerHTML = '';
+            
+            actions.forEach(action => {
+                if (action.url) {
+                    const icon = action.icon || '🔗';
+                    const type = action.type || 'Link';
+                    const a = document.createElement('a');
+                    a.href = action.url;
+                    a.target = '_blank';
+                    a.textContent = `${icon} ${type}`;
+                    socialActionsList.appendChild(a);
+                }
+            });
         }
 
         // ============================================================
@@ -837,13 +984,32 @@
         });
 
         // ============================================================
-        // SAVE HISTORY
+        // SAVE HISTORY - FIXED (tambah linkGo)
         // ============================================================
         function saveHistory(originalUrl, data, serviceName) {
             let shortUrl = '#';
             
-            if (data && data.status === true && data.data && data.data.url) {
-                shortUrl = data.data.url;
+            if (data && data.status === true && data.data) {
+                const urlKeys = ['url', 'link', 'result', 'short_url', 'shortUrl', 'bypass', 'destination', 'target', 'linkGo'];
+                for (const key of urlKeys) {
+                    if (data.data[key]) {
+                        shortUrl = data.data[key];
+                        break;
+                    }
+                }
+                if (shortUrl === '#' && typeof data.data === 'string' && data.data.startsWith('http')) {
+                    shortUrl = data.data;
+                }
+                // Coba cari linkGo di string JSON
+                if (shortUrl === '#') {
+                    const jsonStr = JSON.stringify(data.data);
+                    const match = jsonStr.match(/"linkGo":\s*"([^"]+)"/);
+                    if (match && match[1]) {
+                        shortUrl = match[1];
+                    }
+                }
+            } else if (data && data.linkGo) {
+                shortUrl = data.linkGo;
             } else if (typeof data === 'string') {
                 shortUrl = data;
             } else if (data.short_url || data.shortUrl) {
@@ -854,7 +1020,7 @@
                 shortUrl = data.url;
             }
 
-            if (shortUrl && !shortUrl.startsWith('http') && shortUrl !== '#') {
+            if (shortUrl && !shortUrl.startsWith('http') && shortUrl !== '#' && shortUrl !== '') {
                 shortUrl = 'https://' + shortUrl;
             }
 
@@ -920,12 +1086,17 @@
                 return;
             }
 
-            navigator.clipboard.writeText(text).then(() => {
+            let cleanText = text;
+            if (cleanText.includes('Response:')) {
+                cleanText = cleanText.split('Response:')[1]?.trim() || cleanText;
+            }
+
+            navigator.clipboard.writeText(cleanText).then(() => {
                 copyBtn.textContent = '✅ Copied!';
                 setTimeout(() => copyBtn.textContent = '📋 Copy', 2000);
             }).catch(() => {
                 const textarea = document.createElement('textarea');
-                textarea.value = text;
+                textarea.value = cleanText;
                 document.body.appendChild(textarea);
                 textarea.select();
                 document.execCommand('copy');
