@@ -7,26 +7,16 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <!-- Hamburger -->
-    <div class="hamburger" id="hamburgerBtn" title="Riwayat Bypass">
-        <span></span>
-        <span></span>
-        <span></span>
+    <div class="hamburger" id="hamburgerBtn" title="Riwayat">
+        <span></span><span></span><span></span>
     </div>
 
-    <!-- Sidebar Overlay -->
     <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
-    <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <h2>📜 Riwayat <span class="count" id="historyCount">0</span></h2>
             <button class="sidebar-clear" id="clearHistoryBtn">🗑️ Hapus</button>
-        </div>
-        <div class="sidebar-tabs">
-            <button class="sidebar-tab active" data-tab="local">📱 Saya</button>
-            <button class="sidebar-tab" data-tab="global">🌍 Semua User</button>
-            <button class="sidebar-tab" data-tab="stats">📊 Statistik</button>
         </div>
         <div class="sidebar-body" id="sidebarBody">
             <div class="sidebar-empty">
@@ -34,9 +24,7 @@
                 Belum ada riwayat bypass
             </div>
         </div>
-        <div class="sidebar-footer" id="sidebarFooter">
-            Data tersimpan di browser kamu
-        </div>
+        <div class="sidebar-footer">Data tersimpan di browser kamu</div>
     </div>
 
     <div class="container">
@@ -45,14 +33,12 @@
             <p>Bypass berbagai shortlink dengan mudah</p>
         </div>
 
-        <!-- DEVICE INFO -->
         <div class="card">
             <div class="card-title">
-                📱 Info Device & Pengguna
+                📱 Info Device
                 <span class="badge">Real-time</span>
             </div>
-
-            <div class="device-info-grid" id="deviceInfoGrid">
+            <div class="device-info-grid">
                 <div class="device-info-item">
                     <div class="label">🌐 IP Address</div>
                     <div class="value" id="deviceIp">Loading...</div>
@@ -82,7 +68,7 @@
                     <div class="value" id="deviceNetwork">Loading...</div>
                 </div>
                 <div class="device-info-item">
-                    <div class="label">🕐 Waktu & Tanggal</div>
+                    <div class="label">🕐 Waktu</div>
                     <div class="value" id="deviceTime">Loading...</div>
                 </div>
                 <div class="device-info-item">
@@ -94,11 +80,9 @@
                     <div class="value" id="deviceUserId">Loading...</div>
                 </div>
             </div>
-
             <button class="device-info-refresh" id="refreshDeviceInfo">🔄 Refresh Info</button>
         </div>
 
-        <!-- BYPASS -->
         <div class="card">
             <div class="card-title">
                 🔗 Pilih Metode Skip
@@ -107,47 +91,39 @@
 
             <div class="service-grid" id="serviceGrid">
                 <button class="service-btn active" data-service="tutwuri">
-                    <span class="icon">🌐</span>
-                    Tutwuri/SFL
+                    <span class="icon">🌐</span>Tutwuri/SFL
                 </button>
                 <button class="service-btn" data-service="adlinksumo">
-                    <span class="icon">📢</span>
-                    AdLinkSumo
+                    <span class="icon">📢</span>AdLinkSumo
                 </button>
                 <button class="service-btn" data-service="droplink">
-                    <span class="icon">🔽</span>
-                    Droplink
+                    <span class="icon">🔽</span>Droplink
                 </button>
                 <button class="service-btn" data-service="linkvertise">
-                    <span class="icon">🔗</span>
-                    Linkvertise
+                    <span class="icon">🔗</span>Linkvertise
                 </button>
                 <button class="service-btn" data-service="ouo">
-                    <span class="icon">📎</span>
-                    Ouo.io
+                    <span class="icon">📎</span>Ouo.io
                 </button>
                 <button class="service-btn" data-service="shortig">
-                    <span class="icon">⚡</span>
-                    Shortig
+                    <span class="icon">⚡</span>Shortig
                 </button>
                 <button class="service-btn" data-service="shortxlinks">
-                    <span class="icon">🔀</span>
-                    ShortXLinks
+                    <span class="icon">🔀</span>ShortXLinks
                 </button>
                 <button class="service-btn" data-service="sub4unlock">
-                    <span class="icon">🔓</span>
-                    Sub4Unlock
+                    <span class="icon">🔓</span>Sub4Unlock
                     <span class="sub">co/com/id/io</span>
                 </button>
             </div>
 
             <div class="input-group">
-                <input type="url" id="urlInput" placeholder="Masukkan URL target (contoh: https://sfl.gl/xxxxx)" class="input-field">
+                <input type="url" id="urlInput" placeholder="Masukkan URL target..." class="input-field">
                 <button id="bypassBtn" class="btn-primary">⚡ Bypass</button>
             </div>
 
             <div id="autoDetect" class="auto-detect">
-                🔍 Mendeteksi metode otomatis: <span id="detectedService"></span>
+                🔍 Terdeteksi: <span id="detectedService"></span>
             </div>
 
             <div id="proxyStatus" class="proxy-status"></div>
@@ -182,7 +158,7 @@
         </div>
 
         <div style="text-align:center;color:#555;font-size:12px;padding:20px 0;">
-            Powered by FGSI RestAPIs • Klik ☰ untuk riwayat
+            Powered by FGSI RestAPIs
         </div>
     </div>
 
