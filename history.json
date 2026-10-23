@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "last_updated": "2026-07-17T00:00:00.000Z",
+  "total_bypass": 0,
+  "total_users": 0,
+  "bypass_history": [],
+  "user_sessions": [],
+  "stats": {
+    "by_service": {},
+    "by_device": {},
+    "by_day": {}
+  }
+}
